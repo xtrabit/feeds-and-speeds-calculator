@@ -1,4 +1,4 @@
-<div>
+<div class="parameter">
   <label for="value">{{parameter.description}}</label>
   <input [(ngModel)]="parameter.value" id="value">
   <select
@@ -8,4 +8,3 @@
     <option *ngFor="let u of units; index as i" [ngValue]="u">{{u.name}}</option>
   </select>
 </div>
-{{parameter.units.name}}{{parameter.value}}
