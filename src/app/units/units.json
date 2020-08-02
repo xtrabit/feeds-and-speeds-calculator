@@ -1,0 +1,18 @@
+{
+  "rpm": [
+    {
+      "name": "rev/min",
+      "multiplier": 1
+    }
+  ],
+  "ss": [
+    {
+      "name": "feet/min",
+      "multiplier": 1
+    },
+    {
+      "name": "mm/min",
+      "multiplier": 2
+    }
+  ]
+}
