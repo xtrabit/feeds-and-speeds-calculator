@@ -1,12 +1,32 @@
 [
   {
-    "description": "Surface Speed",
+    "description": "Tool Diameter",
     "value": 0,
-    "type": "ss"
+    "type": "diameter"
+  },
+  {
+    "description": "Feed Rate",
+    "value": 0,
+    "type": "feed"
+  },
+  {
+    "description": "Chip Load",
+    "value": 0,
+    "type": "load"
   },
   {
     "description": "RPM",
     "value": 0,
     "type": "rpm"
+  },
+  {
+    "description": "Cutting Speed",
+    "value": 0,
+    "type": "speed"
+  },
+  {
+    "description": "Number of Teeth",
+    "value": 0,
+    "type": "teeth"
   }
 ]

@@ -1,8 +1,11 @@
 <div>
   <label for="value">{{parameter.description}}</label>
   <input [(ngModel)]="parameter.value" id="value">
-  <select #sel [(ngModel)]="parameter.units" (ngModelChange)="log($event)">
+  <select
+    [disabled]="units.length === 1"
+    [(ngModel)]="parameter.units" (ngModelChange)="log($event)"
+  >
     <option *ngFor="let u of units; index as i" [ngValue]="u">{{u.name}}</option>
   </select>
 </div>
-{{parameter.units.type}}{{parameter.value}}
+{{parameter.units.name}}{{parameter.value}}

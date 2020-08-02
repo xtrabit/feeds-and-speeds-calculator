@@ -1,18 +1,70 @@
 {
+  "diameter": [
+    {
+      "name": "mm",
+      "multiplier": 1
+    },
+    {
+      "name": "inch",
+      "multiplier": 25.4
+    }
+  ],
+  "feed": [
+    {
+      "name": "mm/min",
+      "multiplier": 1
+    },
+    {
+      "name": "meters/min",
+      "multiplier": 0.001
+    },
+    {
+      "name": "inch/min",
+      "multiplier": 0.0393701
+    },
+    {
+      "name": "feet/min",
+      "multiplier": 0.00328084
+    }
+  ],
+  "load": [
+    {
+      "name": "mm",
+      "multiplier": 1
+    },
+    {
+      "name": "inch",
+      "multiplier": 25.4
+    }
+  ],
   "rpm": [
     {
       "name": "rev/min",
       "multiplier": 1
     }
   ],
-  "ss": [
+  "speed": [
     {
       "name": "feet/min",
-      "multiplier": 1
+      "multiplier": 0.00328084
+    },
+    {
+      "name": "inch/min",
+      "multiplier": 0.0393701
     },
     {
       "name": "mm/min",
-      "multiplier": 2
+      "multiplier": 1
+    },
+    {
+      "name": "meters/min",
+      "multiplier": 0.001
+    }
+  ],
+  "teeth": [
+    {
+      "name": "qty",
+      "multiplier": 1
     }
   ]
 }
