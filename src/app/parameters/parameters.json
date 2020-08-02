@@ -1,0 +1,12 @@
+[
+  {
+    "description": "Surface Speed",
+    "value": 0,
+    "type": "ss"
+  },
+  {
+    "description": "RPM",
+    "value": 0,
+    "type": "rpm"
+  }
+]
