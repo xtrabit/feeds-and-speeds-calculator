@@ -1,10 +1,22 @@
 <div class="parameter">
-  <label for="value">{{parameter.description}}</label>
-  <input [(ngModel)]="parameter.value" id="value">
-  <select
-    [disabled]="units.length === 1"
-    [(ngModel)]="parameter.units" (ngModelChange)="log($event)"
+  <label
+    class="label-button"
+    for="value"
+    role="button"
+    [ngClass]="{'label-selected': resultParameter === parameter.type}"
+    (click)="onResultParameterChange()"
   >
-    <option *ngFor="let u of units; index as i" [ngValue]="u">{{u.name}}</option>
-  </select>
+    {{parameter.description}}
+  </label>
+  <div class="inline" *ngIf="resultParameter">
+    <input id="value" [(ngModel)]="parameter.value" [disabled]="resultParameter === parameter.type">
+    <select
+      [disabled]="units.length === 1"
+      (ngModelChange)="log($event)"
+      [(ngModel)]="parameter.units"
+    >
+      <option *ngFor="let u of units" [ngValue]="u">{{u.name}}</option>
+    </select>
+  </div>
 </div>
+{{parameter.units.name}}{{parameter.value}}

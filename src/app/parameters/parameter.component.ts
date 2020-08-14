@@ -12,26 +12,26 @@ import { ParametersService } from './parameters.service';
 export class ParameterComponent {
   public units: Units[];
 
+  @Input() parameter: Parameter;
+  @Input() resultParameter: string;
+  @Output() resultParameterChange = new EventEmitter<string>();
+
   constructor(public parametersService: ParametersService, public unitsService: UnitsService) { }
+
+  log(value) {
+    console.log('LOGGING', value)
+  }
 
   ngOnInit(): void {
     // console.log('C--> PARAMETER COMPONENT INIT', this.parameter);
     this.units = this.unitsService.getUnits(this.parameter.type);
   }
 
-  log(value) {
-    console.log('LOGGING', value)
-  }
-
-  @Input() parameter: Parameter;
-  // @Output() parameterChange = new EventEmitter<Parameter>();
-
-  // onParameterChange() {
-  //   console.log('EMITTER ParameterComponent ParameterService', this.parametersService.getParameters())
-  //   this.parameterChange.emit(this.parameter);
-  // }
-
   // ngOnChanges(changes: SimpleChanges) {
   //   console.log('CHANGES', changes)
   // }
+
+  onResultParameterChange() {
+    this.resultParameterChange.emit(this.parameter.type);
+  }
 }
