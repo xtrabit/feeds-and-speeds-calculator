@@ -10,19 +10,23 @@ export interface ParameterData {
   value: number;
   type: string;
   units: Units;
+  strategy: {[key in Strategy]: Parameter['type'][]};
 }
 
-export abstract class Parameter {
+export abstract class Parameter implements ParameterData{
   readonly description: string;
   readonly type: string;
   public value: number;
   public units: Units;
+  public strategy: {[key in Strategy]: Parameter['type'][]};
 
   constructor(parameter: ParameterData) {
     this.description = parameter.description;
     this.type = parameter.type;
     this.value = parameter.value;
     this.units = parameter.units;
+    this.strategy[Strategy.A] = parameter[Strategy.A];
+    this.strategy[Strategy.B] = parameter[Strategy.B];
   }
 
   abstract calculate(parameters: {[type: string]: Parameter}, strategy: Strategy): void;
