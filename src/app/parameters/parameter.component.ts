@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { Parameter } from './parameter.model';
+import { Parameter, Strategy } from './parameter.model';
 import { Units } from 'src/app/units/units.model';
 import { UnitsService } from 'src/app/units/units.service';
 import { ParametersService } from './parameters.service';
@@ -13,8 +13,9 @@ export class ParameterComponent {
   public units: Units[];
 
   @Input() parameter: Parameter;
-  @Input() resultParameter: string;
-  @Output() resultParameterChange = new EventEmitter<string>();
+  @Input() resultParameter: Parameter;
+  @Input() calculationStrategy: Strategy;
+  @Output() resultParameterChange = new EventEmitter<Parameter>();
 
   constructor(public parametersService: ParametersService, public unitsService: UnitsService) { }
 
@@ -32,6 +33,6 @@ export class ParameterComponent {
   // }
 
   onResultParameterChange() {
-    this.resultParameterChange.emit(this.parameter.type);
+    this.resultParameterChange.emit(this.parameter);
   }
 }

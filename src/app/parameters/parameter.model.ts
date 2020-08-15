@@ -25,8 +25,13 @@ export abstract class Parameter implements ParameterData{
     this.type = parameter.type;
     this.value = parameter.value;
     this.units = parameter.units;
-    this.strategy[Strategy.A] = parameter[Strategy.A];
-    this.strategy[Strategy.B] = parameter[Strategy.B];
+    this.strategy = {} as {[key in Strategy]: Parameter['type'][]};
+    this.strategy[Strategy[Strategy.A]] = parameter.strategy[Strategy.A];
+    this.strategy[Strategy[Strategy.B]] = parameter.strategy[Strategy.B];
+    // this.strategy = {
+    //   [Strategy.A]: parameter[Strategy.A],
+    //   [Strategy.B]: parameter[Strategy.B],
+    // };
   }
 
   abstract calculate(parameters: {[type: string]: Parameter}, strategy: Strategy): void;

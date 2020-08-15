@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { parameters } from './parameters.data';
+import { parametersData } from './parameters.data';
 import { Parameter, ParameterData, createParameter } from './parameter.model';
 import { Units } from 'src/app/units/units.model';
 import { UnitsService } from 'src/app/units/units.service';
@@ -16,7 +16,7 @@ export class ParametersService {
   constructor(private unitsService: UnitsService) {
     // console.log('S--> PARAMETERS SERVICE INITIALIZED');
     this.parameters = {};
-    for (const p of parameters) {
+    for (const p of parametersData) {
       const type: string = p.type;
       const defaultUnits: Units = this.unitsService.getUnits(type)[0];
       const parameter: ParameterData = {

@@ -4,19 +4,20 @@
 <h2 *ngIf="!resultParameter">
   Please select a parameter to calculate.
 </h2>
-<h2 *ngIf="resultParameter && !calculationStrategey">
+<h2 *ngIf="resultParameter && !calculationStrategy">
   Please select calculation strategy.
 </h2>
 <div *ngIf="resultParameter">
   <button *ngFor="let strategy of (strategies | enumToArray)"
-    [ngClass]="{'button-pressed': calculationStrategey === strategy}"
-    (click)="calculationStrategey = strategy"
+    [ngClass]="{'button-pressed': calculationStrategy === strategy}"
+    (click)="calculationStrategy = strategy"
   >{{strategy}}</button>
 </div>
 <div  *ngFor="let item of parameters | keyvalue">
   <app-parameter
     [parameter]="item.value"
     [(resultParameter)]="resultParameter"
+    [calculationStrategy]="calculationStrategy"
   ></app-parameter>
 </div>
 

@@ -1,6 +1,6 @@
 import { Strategy } from 'src/app/parameters/parameter.model';
 
-export const parameters = [
+export const parametersData = [
   {
     description: 'Tool Diameter',
     value: 0,
@@ -83,7 +83,7 @@ export const parameters = [
         'diameter',
         'feed',
         'load',
-        'speed',
+        'teeth',
       ]
     }
   },

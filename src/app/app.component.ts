@@ -10,9 +10,9 @@ import { Parameter, Strategy } from 'src/app/parameters/parameter.model';
 export class AppComponent implements OnInit {
   public title = 'my-app';
   public parameters: {[type: string]: Parameter};
-  public resultParameter: string;
+  public resultParameter: Parameter;
   public strategies: typeof Strategy = Strategy;
-  public calculationStrategey: Strategy;
+  public calculationStrategy: Strategy;
 
   constructor(private parametersService: ParametersService) {}
 
