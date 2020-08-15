@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ParametersService } from 'src/app/parameters/parameters.service';
-import { Parameter } from 'src/app/parameters/parameter.model';
+import { Parameter, Strategy } from 'src/app/parameters/parameter.model';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +9,15 @@ import { Parameter } from 'src/app/parameters/parameter.model';
 })
 export class AppComponent implements OnInit {
   public title = 'my-app';
-  public parameters: Parameter[];
+  public parameters: {[type: string]: Parameter};
+  public resultParameter: string;
+  public strategies: typeof Strategy = Strategy;
+  public calculationStrategey: Strategy;
 
   constructor(private parametersService: ParametersService) {}
 
   ngOnInit(): void {
-    // console.log('C--> APP COMPONENT INIT', this.parameters);
     this.parameters = this.parametersService.getParameters();
+    // console.log('C--> APP COMPONENT INIT', this.parameters);
   }
 }

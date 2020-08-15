@@ -1,7 +1,24 @@
 <!-- <div *ngFor="let parameter of parameters">
   <app-parameter [parameter]="parameter"></app-parameter>
 </div> -->
-<app-parameter *ngFor="let parameter of parameters; index as i" [parameter]="parameters[i]"></app-parameter>
+<h2 *ngIf="!resultParameter">
+  Please select a parameter to calculate.
+</h2>
+<h2 *ngIf="resultParameter && !calculationStrategey">
+  Please select calculation strategy.
+</h2>
+<div *ngIf="resultParameter">
+  <button *ngFor="let strategy of (strategies | enumToArray)"
+    [ngClass]="{'button-pressed': calculationStrategey === strategy}"
+    (click)="calculationStrategey = strategy"
+  >{{strategy}}</button>
+</div>
+<div  *ngFor="let item of parameters | keyvalue">
+  <app-parameter
+    [parameter]="item.value"
+    [(resultParameter)]="resultParameter"
+  ></app-parameter>
+</div>
 
 
 <!-- Toolbar -->

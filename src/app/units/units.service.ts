@@ -8,10 +8,11 @@ import { Units } from './units.model';
 export class UnitsService {
   private units: {
     [type: string]: Units[];
-  } = {};
+  };
 
   constructor() {
     // console.log('S--> UNITS SERVICE INITIALIZED');
+    this.units = {};
     for (let type in unitsJSON) {
       this.units[type] = unitsJSON[type];
     }
