@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Parameter, Strategy } from './parameter.model';
 import { Units } from 'src/app/units/units.model';
 import { UnitsService } from 'src/app/units/units.service';
@@ -16,6 +16,7 @@ export class ParameterComponent {
   @Input() resultParameter: Parameter;
   @Input() calculationStrategy: Strategy;
   @Output() resultParameterChange = new EventEmitter<Parameter>();
+  @ViewChild('myRef') myRef: ElementRef;
 
   constructor(public parametersService: ParametersService, public unitsService: UnitsService) { }
 
@@ -24,13 +25,13 @@ export class ParameterComponent {
   }
 
   ngOnInit(): void {
-    // console.log('C--> PARAMETER COMPONENT INIT', this.parameter);
     this.units = this.unitsService.getUnits(this.parameter.type);
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   console.log('CHANGES', changes)
-  // }
+  validate(value) {
+    console.log('VALIDATING . . .', value, 'p:', this.parameter.value)
+    this.myRef.nativeElement.value = this.parameter.validate(value);
+  }
 
   onResultParameterChange() {
     this.resultParameterChange.emit(this.parameter);

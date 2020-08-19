@@ -1,7 +1,7 @@
 <div class="parameter">
   <label
     class="label-button"
-    for="value"
+    [for]="parameter.type"
     role="button"
     [ngClass]="{
       'selected-result': resultParameter && resultParameter.type === parameter.type,
@@ -12,14 +12,18 @@
     {{parameter.description}}
   </label>
   <div class="inline" *ngIf="resultParameter">
-    <input id="value" [(ngModel)]="parameter.value"
+    <input
+      #myRef
+      [id]="parameter.type"
+      ngModel
+      (ngModelChange)="validate($event)"
       [disabled]="resultParameter.type === parameter.type
       || !(calculationStrategy && resultParameter.strategy[calculationStrategy].includes(parameter.type))"
     >
     <select
       [disabled]="units.length === 1"
-      (ngModelChange)="log($event)"
       [(ngModel)]="parameter.units"
+      (ngModelChange)="log($event)"
     >
       <option *ngFor="let u of units" [ngValue]="u">{{u.name}}</option>
     </select>

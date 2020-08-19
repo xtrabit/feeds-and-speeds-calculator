@@ -8,6 +8,9 @@
   Please select calculation strategy.
 </h2>
 <div *ngIf="resultParameter">
+  <span>
+    Calculation Strategy
+  </span>
   <button *ngFor="let strategy of (strategies | enumToArray)"
     [ngClass]="{'button-pressed': calculationStrategy === strategy}"
     (click)="calculationStrategy = strategy"
