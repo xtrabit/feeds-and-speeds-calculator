@@ -13,14 +13,19 @@ export interface ParameterData {
   strategy: {[key in Strategy]: Parameter['type'][]};
 }
 
+export type Parameters = {
+  [type: string]: Parameter
+}
+
 export abstract class Parameter implements ParameterData{
   readonly description: string;
   readonly type: string;
   private _value: number;
   public units: Units;
   public strategy: {[key in Strategy]: Parameter['type'][]};
+  public parameters: Parameters;
 
-  constructor(parameter: ParameterData) {
+  constructor(parameter: ParameterData, parameters: Parameters) {
     this.description = parameter.description;
     this.type = parameter.type;
     this._value = parameter.value;
@@ -28,9 +33,10 @@ export abstract class Parameter implements ParameterData{
     this.strategy = {} as {[key in Strategy]: Parameter['type'][]};
     this.strategy[Strategy[Strategy.A]] = parameter.strategy[Strategy.A];
     this.strategy[Strategy[Strategy.B]] = parameter.strategy[Strategy.B];
+    this.parameters = parameters;
   }
 
-  abstract calculate(parameters: {[type: string]: Parameter}, strategy: Strategy): void;
+  abstract calculate(strategy: Strategy): void;
 
   abstract cleanValue(value: string): string;
 
@@ -45,6 +51,10 @@ export abstract class Parameter implements ParameterData{
     this._value = value;
   }
 
+  get converted() {
+    return this.value / this.units.multiplier;
+  }
+
   validate(value: string): string {
     value = this.cleanValue(value);
     this.value = parseFloat(value);
@@ -54,15 +64,15 @@ export abstract class Parameter implements ParameterData{
 
 class Diameter extends Parameter {
 
-  calculate(parameters: {[type: string]: Parameter}, strategy: Strategy) {
-    const { feed, load, rpm, speed, teeth } = parameters;
+  calculate(strategy: Strategy) {
+    const { feed, load, rpm, speed, teeth } = this.parameters;
     let value: number = 0;
-    switch (strategy) {
+    switch (Strategy[strategy as unknown as string]) {
       case Strategy.A:
-        value = speed.value / (Math.PI * rpm.value);
+        value = speed.converted / (Math.PI * rpm.converted) * this.units.multiplier;
         break;
       case Strategy.B:
-        value = speed.value * teeth.value * load.value / (Math.PI * feed.value);
+        value = speed.converted * teeth.converted * load.converted / (Math.PI * feed.converted) * this.units.multiplier;
         break;
     }
     this.value = value;
@@ -75,36 +85,36 @@ class Diameter extends Parameter {
 
 class Feed extends Parameter {
 
-  calculate(parameters: {[type: string]: Parameter}, strategy: Strategy) {
-    const { diameter, load, rpm, speed, teeth } = parameters;
+  calculate(strategy: Strategy) {
+    const { diameter, load, rpm, speed, teeth } = this.parameters;
     let value: number = 0;
-    switch (strategy) {
+    switch (Strategy[strategy as unknown as string]) {
       case Strategy.A:
-        value = rpm.value * teeth.value * load.value;
+        value = rpm.converted * teeth.converted * load.converted * this.units.multiplier;
         break;
       case Strategy.B:
-        value = speed.value * teeth.value * load.value / (Math.PI * diameter.value);
+        value = speed.converted * teeth.converted * load.converted / (Math.PI * diameter.converted) * this.units.multiplier;
         break;
     }
     this.value = value;
   }
 
   cleanValue(value: string) {
-    return cleanFloat(value);
+    return cleanInt(value);
   }
 }
 
 class Load extends Parameter {
 
-  calculate(parameters: {[type: string]: Parameter}, strategy: Strategy) {
-    const { diameter, feed, rpm, speed, teeth } = parameters;
+  calculate(strategy: Strategy) {
+    const { diameter, feed, rpm, speed, teeth } = this.parameters;
     let value: number = 0;
-    switch (strategy) {
+    switch (Strategy[strategy as unknown as string]) {
       case Strategy.A:
-        value = feed.value / (rpm.value * teeth.value);
+        value = feed.converted / (rpm.converted * teeth.converted) * this.units.multiplier;
         break;
       case Strategy.B:
-        value = feed.value * Math.PI * diameter.value / (speed.value * teeth.value);
+        value = feed.converted * Math.PI * diameter.converted / (speed.converted * teeth.converted) * this.units.multiplier;
         break;
     }
     this.value = value;
@@ -117,15 +127,15 @@ class Load extends Parameter {
 
 class Rpm extends Parameter {
 
-  calculate(parameters: {[type: string]: Parameter}, strategy: Strategy) {
-    const { diameter, feed, load, speed, teeth } = parameters;
+  calculate(strategy: Strategy) {
+    const { diameter, feed, load, speed, teeth } = this.parameters;
     let value: number = 0;
-    switch (strategy) {
+    switch (Strategy[strategy as unknown as string]) {
       case Strategy.A:
-        value = speed.value / (Math.PI * diameter.value);
+        value = speed.converted / (Math.PI * diameter.converted) * this.units.multiplier;
         break;
       case Strategy.B:
-        value = feed.value / (teeth.value * load.value);
+        value = feed.converted / (teeth.converted * load.converted) * this.units.multiplier;
         break;
     }
     this.value = value;
@@ -138,15 +148,15 @@ class Rpm extends Parameter {
 
 class Speed extends Parameter {
 
-  calculate(parameters: {[type: string]: Parameter}, strategy: Strategy) {
-    const { diameter, feed, load, rpm, teeth } = parameters;
+  calculate(strategy: Strategy) {
+    const { diameter, feed, load, rpm, teeth } = this.parameters;
     let value: number = 0;
-    switch (strategy) {
+    switch (Strategy[strategy as unknown as string]) {
       case Strategy.A:
-        value = Math.PI * rpm.value * diameter.value;
+        value = Math.PI * rpm.converted * diameter.converted * this.units.multiplier;
         break;
       case Strategy.B:
-        value = Math.PI * feed.value * diameter.value / (teeth.value * load.value);
+        value = Math.PI * feed.converted * diameter.converted / (teeth.converted * load.converted) * this.units.multiplier;
         break;
     }
     this.value = value;
@@ -159,15 +169,15 @@ class Speed extends Parameter {
 
 class Teeth extends Parameter {
 
-  calculate(parameters: {[type: string]: Parameter}, strategy: Strategy) {
-    const { diameter, feed, load, rpm, speed } = parameters;
+  calculate(strategy: Strategy) {
+    const { diameter, feed, load, rpm, speed } = this.parameters;
     let value: number = 0;
-    switch (strategy) {
+    switch (Strategy[strategy as unknown as string]) {
       case Strategy.A:
-        value = feed.value / (rpm.value * load.value);
+        value = feed.converted / (rpm.converted * load.converted) * this.units.multiplier;
         break;
       case Strategy.B:
-        value = Math.PI * feed.value * diameter.value / (speed.value * load.value);
+        value = Math.PI * feed.converted * diameter.converted / (speed.converted * load.converted) * this.units.multiplier;
         break;
     }
     this.value = value;
@@ -187,19 +197,20 @@ const map = {
   teeth: Teeth,
 };
 
-export function createParameter(parameter: ParameterData): Parameter {
-  return new map[parameter.type](parameter);
+export function createParameter(parameter: ParameterData, parameters: Parameters): Parameter {
+  return new map[parameter.type](parameter, parameters);
 }
 
 function cleanFloat(value: string): string {
     value = value.replace(/[^\d\.]/, '');
-    value = value.replace(/(?<=\.\d*)\./, '');
+    value = value.replace(/(?<=\.\d*)\..*/, '');
     value = value.replace(/^(?=\.)/, '0');
     value = value.replace(/^0(?=\d)/, '');
     return value;
 }
 
 function cleanInt(value: string): string {
+    value = value.replace(/\..*/, '');
     value = value.replace(/[^\d]/, '');
     value = value.replace(/^0(?=\d)/, '');
     return value;
