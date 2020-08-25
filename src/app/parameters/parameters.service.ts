@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { parametersData } from './parameters.data';
-import { Parameter, ParameterData, createParameter } from './parameter.model';
+import { Parameter, Parameters, ParameterData, createParameter } from './parameter.model';
 import { Units } from 'src/app/units/units.model';
 import { UnitsService } from 'src/app/units/units.service';
 
@@ -9,9 +9,7 @@ import { UnitsService } from 'src/app/units/units.service';
 })
 export class ParametersService {
   // private parameters: Parameter[];
-  private parameters: {
-    [type: string]: Parameter
-  }
+  private parameters: Parameters;
 
   constructor(private unitsService: UnitsService) {
     // console.log('S--> PARAMETERS SERVICE INITIALIZED');
@@ -26,11 +24,11 @@ export class ParametersService {
         units: defaultUnits,
         value: p.value,
       }
-      this.parameters[type] = createParameter(parameter);
+      this.parameters[type] = createParameter(parameter, this.parameters);
     }
   }
 
-  getParameters(): {[type: string]: Parameter} {
+  getParameters(): Parameters {
     return this.parameters;
   }
 }
