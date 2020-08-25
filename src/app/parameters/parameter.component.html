@@ -15,15 +15,15 @@
     <input
       #myRef
       [id]="parameter.type"
-      ngModel
-      (ngModelChange)="validate($event)"
-      [disabled]="resultParameter.type === parameter.type
-      || !(calculationStrategy && resultParameter.strategy[calculationStrategy].includes(parameter.type))"
+      [ngModel]="value"
+      (ngModelChange)="this.value = $event"
+      [disabled]="resultParameter.type === parameter.type || !(calculationStrategy && resultParameter.strategy[calculationStrategy].includes(parameter.type))"
+      (focus)="this.value = value"
     >
     <select
       [disabled]="units.length === 1"
       [(ngModel)]="parameter.units"
-      (ngModelChange)="log($event)"
+      (ngModelChange)="calculate()"
     >
       <option *ngFor="let u of units" [ngValue]="u">{{u.name}}</option>
     </select>

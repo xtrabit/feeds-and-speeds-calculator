@@ -20,4 +20,8 @@ export class AppComponent implements OnInit {
     this.parameters = this.parametersService.getParameters();
     // console.log('C--> APP COMPONENT INIT', this.parameters);
   }
+
+  // calculate() {
+  //   const result = this.resultParameter.calculate(this.calculationStrategy);
+  // }
 }

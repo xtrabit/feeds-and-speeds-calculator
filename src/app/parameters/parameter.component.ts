@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges, ChangeDetectorRef, AfterViewInit, ApplicationRef, ViewChildren, QueryList } from '@angular/core';
 import { Parameter, Strategy } from './parameter.model';
 import { Units } from 'src/app/units/units.model';
 import { UnitsService } from 'src/app/units/units.service';
@@ -9,7 +9,7 @@ import { ParametersService } from './parameters.service';
   templateUrl: './parameter.component.html',
   styleUrls: ['./parameter.component.scss']
 })
-export class ParameterComponent {
+export class ParameterComponent implements OnInit, OnChanges {
   public units: Units[];
 
   @Input() parameter: Parameter;
@@ -18,19 +18,45 @@ export class ParameterComponent {
   @Output() resultParameterChange = new EventEmitter<Parameter>();
   @ViewChild('myRef') myRef: ElementRef;
 
+  get value() {
+    if (this.myRef) {
+      const val = this.myRef.nativeElement.value;
+      console.log(val)
+      if (parseFloat(this.parameter.cleanValue(val.toString())) === parseFloat(val)
+        && parseFloat(val) === this.parameter.value) {
+        return val;
+      }
+    }
+    return this.parameter.value.toString();
+  }
+
+  set value(value: string) {
+    const val = this.parameter.validate(value);
+    this.myRef.nativeElement.value = val;
+    this.calculate();
+  }
+
+  calculate() {
+    if (this.resultParameter && this.calculationStrategy) {
+      this.resultParameter.calculate(this.calculationStrategy);
+    }
+  }
+
   constructor(public parametersService: ParametersService, public unitsService: UnitsService) { }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.resultParameter && changes.resultParameter.currentValue === this.parameter && this.calculationStrategy) {
+      this.parameter.calculate(this.calculationStrategy);
+      console.log(changes.resultParameter.currentValue);
+    }
+  }
+
   log(value) {
-    console.log('LOGGING', value)
+    console.log('LOGGING', value);
   }
 
   ngOnInit(): void {
     this.units = this.unitsService.getUnits(this.parameter.type);
-  }
-
-  validate(value) {
-    console.log('VALIDATING . . .', value, 'p:', this.parameter.value)
-    this.myRef.nativeElement.value = this.parameter.validate(value);
   }
 
   onResultParameterChange() {

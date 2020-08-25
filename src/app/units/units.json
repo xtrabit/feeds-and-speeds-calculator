@@ -6,7 +6,7 @@
     },
     {
       "name": "inch",
-      "multiplier": 25.4
+      "multiplier": 0.0393701
     }
   ],
   "feed": [

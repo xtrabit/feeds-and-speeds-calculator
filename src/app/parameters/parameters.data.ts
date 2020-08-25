@@ -7,8 +7,8 @@ export const parametersData = [
     type: 'diameter',
     strategy: {
       [Strategy.A]: [
-        'feed',
         'rpm',
+        'speed',
       ],
       [Strategy.B]: [
         'feed',
