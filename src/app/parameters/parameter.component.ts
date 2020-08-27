@@ -21,9 +21,7 @@ export class ParameterComponent implements OnInit, OnChanges {
   get value() {
     if (this.myRef) {
       const val = this.myRef.nativeElement.value;
-      console.log(val)
-      if (parseFloat(this.parameter.cleanValue(val.toString())) === parseFloat(val)
-        && parseFloat(val) === this.parameter.value) {
+      if (parseFloat(val) === this.parameter.value) {
         return val;
       }
     }
@@ -36,19 +34,20 @@ export class ParameterComponent implements OnInit, OnChanges {
     this.calculate();
   }
 
-  calculate() {
-    if (this.resultParameter && this.calculationStrategy) {
-      this.resultParameter.calculate(this.calculationStrategy);
+  calculate(parameter: Parameter = this.resultParameter) {
+    if (parameter && this.calculationStrategy) {
+      parameter.calculate(this.calculationStrategy);
     }
   }
 
   constructor(public parametersService: ParametersService, public unitsService: UnitsService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.resultParameter && changes.resultParameter.currentValue === this.parameter && this.calculationStrategy) {
-      this.parameter.calculate(this.calculationStrategy);
-      console.log(changes.resultParameter.currentValue);
-    }
+    // this.calculate();
+    // if (changes.resultParameter && changes.resultParameter.currentValue === this.parameter && this.calculationStrategy) {
+    //   this.parameter.calculate(this.calculationStrategy);
+    //   console.log(changes.resultParameter.currentValue);
+    // }
   }
 
   log(value) {
@@ -60,6 +59,7 @@ export class ParameterComponent implements OnInit, OnChanges {
   }
 
   onResultParameterChange() {
+    this.calculate(this.parameter);
     this.resultParameterChange.emit(this.parameter);
   }
 }

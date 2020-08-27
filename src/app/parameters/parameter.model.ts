@@ -206,6 +206,7 @@ function cleanFloat(value: string): string {
     value = value.replace(/(?<=\.\d*)\..*/, '');
     value = value.replace(/^(?=\.)/, '0');
     value = value.replace(/^0(?=\d)/, '');
+    if (value === '') value = '0';
     return value;
 }
 
@@ -213,5 +214,6 @@ function cleanInt(value: string): string {
     value = value.replace(/\..*/, '');
     value = value.replace(/[^\d]/, '');
     value = value.replace(/^0(?=\d)/, '');
+    if (value === '') value = '0';
     return value;
 }

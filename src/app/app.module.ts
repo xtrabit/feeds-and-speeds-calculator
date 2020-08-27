@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ParameterComponent } from './parameters/parameter.component';
 import { EnumToArrayPipe } from './shared/enumToArray.pipe';
-// import { UnitsService } from 'src/app/units/units.service';
-// import { ParametersService } from 'src/app/parameters.service';
 
 @NgModule({
   declarations: [
@@ -21,8 +19,6 @@ import { EnumToArrayPipe } from './shared/enumToArray.pipe';
     FormsModule,
   ],
   providers: [
-    // UnitsService,
-    // ParametersService,
   ],
   bootstrap: [AppComponent]
 })

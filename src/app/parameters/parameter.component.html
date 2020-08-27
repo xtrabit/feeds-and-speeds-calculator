@@ -17,7 +17,8 @@
       [id]="parameter.type"
       [ngModel]="value"
       (ngModelChange)="this.value = $event"
-      [disabled]="resultParameter.type === parameter.type || !(calculationStrategy && resultParameter.strategy[calculationStrategy].includes(parameter.type))"
+      [disabled]="resultParameter.type === parameter.type
+        || !(calculationStrategy && resultParameter.strategy[calculationStrategy].includes(parameter.type))"
       (focus)="this.value = value"
     >
     <select
