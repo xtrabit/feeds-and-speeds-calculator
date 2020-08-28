@@ -16,7 +16,8 @@ export const parametersData = [
         'speed',
         'teeth',
       ]
-    }
+    },
+    digits: 3,
   },
   {
     description: 'Feed Rate',
@@ -34,7 +35,8 @@ export const parametersData = [
         'speed',
         'teeth',
       ]
-    }
+    },
+    digits: 0,
   },
   {
     description: 'Chip Load',
@@ -52,7 +54,8 @@ export const parametersData = [
         'speed',
         'teeth',
       ]
-    }
+    },
+    digits: 3,
   },
   {
     description: 'RPM',
@@ -68,7 +71,8 @@ export const parametersData = [
         'load',
         'teeth',
       ]
-    }
+    },
+    digits: 0,
   },
   {
     description: 'Cutting Speed',
@@ -85,7 +89,8 @@ export const parametersData = [
         'load',
         'teeth',
       ]
-    }
+    },
+    digits: 0,
   },
   {
     description: 'Number of Teeth',
@@ -103,6 +108,7 @@ export const parametersData = [
         'load',
         'speed',
       ]
-    }
+    },
+    digits: 2,
   }
 ];

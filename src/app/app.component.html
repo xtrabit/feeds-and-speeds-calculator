@@ -2,10 +2,13 @@
   <app-parameter [parameter]="parameter"></app-parameter>
 </div> -->
 <h2 *ngIf="!resultParameter">
-  Please select a parameter to calculate.
+  Select a parameter to calculate.
 </h2>
 <h2 *ngIf="resultParameter && !calculationStrategy">
-  Please select calculation strategy.
+  Select calculation strategy.
+</h2>
+<h2 *ngIf="resultParameter && calculationStrategy">
+  Input values to see the result.
 </h2>
 <div *ngIf="resultParameter">
   <span>

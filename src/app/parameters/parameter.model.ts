@@ -11,6 +11,7 @@ export interface ParameterData {
   type: string;
   units: Units;
   strategy: {[key in Strategy]: Parameter['type'][]};
+  digits: number;
 }
 
 export type Parameters = {
@@ -24,6 +25,7 @@ export abstract class Parameter implements ParameterData{
   public units: Units;
   public strategy: {[key in Strategy]: Parameter['type'][]};
   public parameters: Parameters;
+  public digits: number;
 
   constructor(parameter: ParameterData, parameters: Parameters) {
     this.description = parameter.description;
@@ -34,6 +36,7 @@ export abstract class Parameter implements ParameterData{
     this.strategy[Strategy[Strategy.A]] = parameter.strategy[Strategy.A];
     this.strategy[Strategy[Strategy.B]] = parameter.strategy[Strategy.B];
     this.parameters = parameters;
+    this.digits = parameter.digits;
   }
 
   abstract calculate(strategy: Strategy): void;
@@ -48,7 +51,7 @@ export abstract class Parameter implements ParameterData{
     if ([-Infinity, Infinity].includes(value) || isNaN(value)) {
       value = 0;
     }
-    this._value = value;
+    this._value = parseFloat(value.toFixed(this.digits));
   }
 
   get converted() {
@@ -79,7 +82,7 @@ class Diameter extends Parameter {
   }
 
   cleanValue(value: string) {
-    return cleanFloat(value);
+    return cleanFloat(value, this.digits);
   }
 }
 
@@ -121,7 +124,7 @@ class Load extends Parameter {
   }
 
   cleanValue(value: string) {
-    return cleanFloat(value);
+    return cleanFloat(value, this.digits);
   }
 }
 
@@ -201,11 +204,12 @@ export function createParameter(parameter: ParameterData, parameters: Parameters
   return new map[parameter.type](parameter, parameters);
 }
 
-function cleanFloat(value: string): string {
+function cleanFloat(value: string, digits: number): string {
     value = value.replace(/[^\d\.]/, '');
     value = value.replace(/(?<=\.\d*)\..*/, '');
     value = value.replace(/^(?=\.)/, '0');
     value = value.replace(/^0(?=\d)/, '');
+    value = value.replace(new RegExp(`(?<=\\.\\d{${digits}}).*`, 'g'), '');
     if (value === '') value = '0';
     return value;
 }

@@ -23,6 +23,7 @@ export class ParametersService {
         type: type,
         units: defaultUnits,
         value: p.value,
+        digits: p.digits,
       }
       this.parameters[type] = createParameter(parameter, this.parameters);
     }
